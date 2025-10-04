@@ -1,0 +1,54 @@
+<%= form_with(model: recipe, local: true) do |f| %>
+  <% if recipe.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
+      <ul>
+        <% recipe.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :user_id, "Author" %>
+    <%= f.select :user_id, options_for_select(User.all.map { |u| [u.name, u.id] }, recipe.user_id), { prompt: "Select an author" } %>
+  </div>
+
+  <div>
+    <%= f.label :instructions %>
+    <%= f.text_area :instructions, rows: 5 %>
+  </div>
+<h3>Tags</h3>
+<% Tag.all.each do |tag| %>
+  <div>
+    <%= check_box_tag "recipe[tag_ids][]", tag.id, recipe.tags.include?(tag), id: "recipe_tag_#{tag.id}" %>
+    <%= label_tag "recipe_tag_#{tag.id}", tag.name %>
+  </div>
+<% end %>
+
+<h3>Ingredients</h3>
+
+<div data-controller="nested-form">
+  <div data-nested-form-target="links">
+    <%= f.fields_for :ingredients do |ingredient_form| %>
+      <%= render "ingredient_fields", f: ingredient_form %>
+    <% end %>
+  </div>
+
+  <div data-nested-form-target="template" style="display: none;">
+    <%= f.fields_for :ingredients, Recipe.new.ingredients.build, child_index: 'TEMPLATE_RECORD' do |ingredient_form| %>
+      <%= render "ingredient_fields", f: ingredient_form %>
+    <% end %>
+  </div>
+
+  <button data-action="click->nested-form#add_association" type="button">Add Ingredient</button>
+</div>
+
+  <%= f.submit %>
+<% end %>

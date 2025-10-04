@@ -1,0 +1,12 @@
+<h1>Recipes</h1>
+
+<%= link_to "New Recipe", new_recipe_path %>
+
+<% @recipes.each do |recipe| %>
+  <div style="border: 1px solid #ccc; padding: 10px; margin: 10px 0;">
+    <h2><%= link_to recipe.name, recipe_path(recipe) %></h2>
+    <p><strong>Author:</strong> <%= recipe.user.name %></p>
+    <p><strong>Ingredients:</strong> <%= recipe.ingredients.count %></p>
+    <%= link_to "Edit", edit_recipe_path(recipe) %>
+  </div>
+<% end %>

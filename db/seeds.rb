@@ -7,3 +7,20 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+User.create([
+  { name: "Gordon Ramsay", email: "gordon@example.com" },
+  { name: "Julia Child", email: "julia@example.com" },
+  { name: "Jamie Oliver", email: "jamie@example.com" }
+])
+
+puts "Created #{User.count} users"
+
+Tag.create([
+  { name: "Dessert" },
+  { name: "Quick" },
+  { name: "Healthy" },
+  { name: "Vegetarian" },
+  { name: "Comfort Food" }
+])
+
+puts "Created #{Tag.count} tags"
